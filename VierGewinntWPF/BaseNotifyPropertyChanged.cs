@@ -6,6 +6,11 @@ namespace VierGewinntWPF
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+        /// <summary>
+        /// Fire this event when a Property has changed
+        /// Notify all obj that are listining
+        /// </summary>
+        /// <param name="propertyName"></param>
         protected void FirePropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

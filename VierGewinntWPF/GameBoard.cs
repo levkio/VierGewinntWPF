@@ -6,6 +6,9 @@ namespace VierGewinntWPF
     class GameBoard
     {
         private readonly Dictionary<Location, Token> board;
+
+        internal Dictionary<Location, Token> Board => board;
+
         Location lastLocationPlayed;
 
         public static int MaxRow { get { return 6; } }
@@ -23,11 +26,13 @@ namespace VierGewinntWPF
         }
         public bool IsEmpty
         {
-            get { return board.Values.All(d => d == Token.Empty); }
+            get { return Board.Values.All(d => d == Token.Empty); }
         }
+
+
         public int LastLocationPlayedAsOrderIndex()
         {
-            return board.Keys.OrderBy(k => k.Row).ThenBy(k => k.Column).ToList().IndexOf(LastLocationPlayed);
+            return Board.Keys.OrderBy(k => k.Row).ThenBy(k => k.Column).ToList().IndexOf(LastLocationPlayed);
         }
 
 
@@ -36,13 +41,16 @@ namespace VierGewinntWPF
             board = new Dictionary<Location, Token>(MaxRow * MaxColumn);
         }
 
+        /// <summary>
+        /// Add Row*Column empty token to the gameboard
+        /// </summary>
         public void Initialize()
         {
             int x, y;
             x = y = 1;
             for (int i = 1; i <= MaxRow * MaxColumn; i++)
             {
-                board.Add(new Location(x, y), Token.Empty);
+                Board.Add(new Location(x, y), Token.Empty);
                 x++;
                 if(x > MaxColumn)
                 {
@@ -52,30 +60,42 @@ namespace VierGewinntWPF
             }
         }
 
+        /// <summary>
+        /// place a token in the "lowest" free slot 
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="column"></param>
+        /// <returns></returns>
         public bool PlayToken(Token token, int column)
         {
             int row = MaxRow;
-            while(row > 0 && board[new Location(row,column)] != Token.Empty)
+            while(row > 0 && Board[new Location(row,column)] != Token.Empty)
             {
                 row--;
             }
 
             if(row > 0)
             {
-                board[new Location(row, column)] = token;
+                Board[new Location(row, column)] = token;
                 return true;
             }
             return false;
         }
         public bool Winner()
         {
-            if (HorizontalWins(lastLocationPlayed, board[lastLocationPlayed])) return true;
-            if (NWSE_DiagonalWins(lastLocationPlayed, board[lastLocationPlayed])) return true;
-            if (VerticalWins(lastLocationPlayed, board[lastLocationPlayed])) return true;
-            if (NESW_DiagonalWins(lastLocationPlayed, board[lastLocationPlayed])) return true;
+            if (HorizontalWins(lastLocationPlayed, Board[lastLocationPlayed])) return true;
+            if (NWSE_DiagonalWins(lastLocationPlayed, Board[lastLocationPlayed])) return true;
+            if (VerticalWins(lastLocationPlayed, Board[lastLocationPlayed])) return true;
+            if (NESW_DiagonalWins(lastLocationPlayed, Board[lastLocationPlayed])) return true;
             return false;
         }
 
+        /// <summary>
+        /// Checks if there are > 3  token from the same color in the Northeast/Southweast diagonal
+        /// </summary>
+        /// <param name="lastLocationPlayed"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
         private bool NESW_DiagonalWins(Location lastLocationPlayed, Token token)
         {
             var countToken = 0;
@@ -86,8 +106,8 @@ namespace VierGewinntWPF
             while(row >= 1 && column <= MaxColumn)
             {
                 var loc = new Location(row, column);
-                if (board[loc] != token) break;
-                if (board[loc] == token)
+                if (Board[loc] != token) break;
+                if (Board[loc] == token)
                 {
                     countToken++;
                     column++;
@@ -105,7 +125,7 @@ namespace VierGewinntWPF
             while(row <= MaxRow && column >= 1)
             {
                 var loc = new Location(row, column);
-                if(board[loc] == token)
+                if(Board[loc] == token)
                 {
                     countToken++;
                     column--;
@@ -118,6 +138,13 @@ namespace VierGewinntWPF
             }
             return countToken >= 3;
         }
+
+        /// <summary>
+        /// Checks if there are > 3  token from the same color in the Northeast/Southweast diagonal
+        /// </summary>
+        /// <param name="lastLocationPlayed"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
         private bool NWSE_DiagonalWins(Location lastLocationPlayed, Token token)
         {
             var countToken = 0;
@@ -128,7 +155,7 @@ namespace VierGewinntWPF
             while(row >= 1 && column >= 1)
             {
                 var loc = new Location(row, column);
-                if(board[loc] == token)
+                if(Board[loc] == token)
                 {
                     countToken++;
                     column--;
@@ -146,7 +173,7 @@ namespace VierGewinntWPF
             while(row <= MaxRow && column <= MaxColumn)
             {
                 var loc = new Location(row, column);
-                if(board[loc] == token)
+                if(Board[loc] == token)
                 {
                     countToken++;
                     column++;
@@ -159,6 +186,13 @@ namespace VierGewinntWPF
             }
             return countToken >= 3;
         }
+
+        /// <summary>
+        /// Checks if there are > 3  token from the same color horizontal 
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
         private bool HorizontalWins(Location location, Token token)
         {
             var countToken = 0;
@@ -167,7 +201,7 @@ namespace VierGewinntWPF
             while(column <= MaxColumn)
             {
                 var loc = new Location(location.Row, column);
-                if(board[loc] == token)
+                if(Board[loc] == token)
                 {
                     countToken++;
                     column++;
@@ -182,7 +216,7 @@ namespace VierGewinntWPF
             column = location.Column - 1;
             while(column >= 1){
                 var loc = new Location(location.Row, column);
-                if(board[loc] == token)
+                if(Board[loc] == token)
                 {
                     countToken++;
                     column--;
@@ -191,6 +225,13 @@ namespace VierGewinntWPF
             }
             return countToken >= 3;
         }
+
+        /// <summary>
+        /// Checks if there are > 3  token from the same color vertical
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
         private bool VerticalWins(Location location, Token token)
         {
             var countToken = 0;
@@ -199,7 +240,7 @@ namespace VierGewinntWPF
             while(row <= MaxRow)
             {
                 var loc = new Location(row, location.Column);
-                if(board[loc] == token)
+                if(Board[loc] == token)
                 {
                     countToken++;
                     row++;

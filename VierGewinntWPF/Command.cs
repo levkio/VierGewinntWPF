@@ -10,6 +10,11 @@ namespace VierGewinntWPF
         protected Action<Object> parameterizedAction = null;
         private bool canExecute = false;
 
+        /// <summary>
+        /// Invoks the Action(s) 
+        /// </summary>
+        /// <param name="action"></param>
+        /// <param name="canExecute"></param>
         public Command(Action action, bool canExecute = true)
         {
             this.action = action;

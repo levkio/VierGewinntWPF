@@ -59,12 +59,15 @@ namespace VierGewinntWPF
             InitializeGame();
         }
 
+        /// <summary>
+        /// Initialize the Gameboard and set all default settings
+        /// </summary>
         public void InitializeGame()
         {
             gameBoard = new GameBoard();
             gameBoard.Initialize();
             boardLocationColors = new ObservableCollection<string>
-                (Enumerable.Repeat<string>("AliceBlue", GameBoard.MaxRow * GameBoard.MaxColumn));
+                (Enumerable.Repeat("AliceBlue", GameBoard.MaxRow * GameBoard.MaxColumn));
             RedPlayerTurn = "Visible";
             BlackPlayerTurn = "Hidden";
             RedPlayerWins = "Hidden";

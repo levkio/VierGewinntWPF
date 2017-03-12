@@ -21,6 +21,12 @@ namespace VierGewinntWPF
         {
             return "Column: " + Column + " Row: " + Row;
         }
+
+        /// <summary>
+        /// checks if the row & column got the same values
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public override bool Equals(object obj)
         {
             var t = obj as Location;
