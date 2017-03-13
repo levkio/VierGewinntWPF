@@ -21,6 +21,7 @@ namespace VierGewinntWPF
             {
                 int col = (int)button.GetValue(Grid.ColumnProperty);
                 (DataContext as ConnectFourViewModelcs).PlayTokenCommand.Execute(col);
+
             }
         }
 

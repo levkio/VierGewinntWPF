@@ -5,6 +5,10 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VierGewinntWPF", "VierGewinntWPF\VierGewinntWPF.csproj", "{A8D7E80D-CCC0-451A-895A-F30BAA0BB3CA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zeitmessung", "Zeitmessung\Zeitmessung.csproj", "{1375B8DD-A68E-4F2A-8B8A-FFFE57D3A645}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZeitmessungWPF", "ZeitmessungWPF\ZeitmessungWPF.csproj", "{E5CEA0BD-79D7-4D34-9E5A-112E2C1EEFA7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{A8D7E80D-CCC0-451A-895A-F30BAA0BB3CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8D7E80D-CCC0-451A-895A-F30BAA0BB3CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8D7E80D-CCC0-451A-895A-F30BAA0BB3CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1375B8DD-A68E-4F2A-8B8A-FFFE57D3A645}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1375B8DD-A68E-4F2A-8B8A-FFFE57D3A645}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1375B8DD-A68E-4F2A-8B8A-FFFE57D3A645}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1375B8DD-A68E-4F2A-8B8A-FFFE57D3A645}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5CEA0BD-79D7-4D34-9E5A-112E2C1EEFA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5CEA0BD-79D7-4D34-9E5A-112E2C1EEFA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5CEA0BD-79D7-4D34-9E5A-112E2C1EEFA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5CEA0BD-79D7-4D34-9E5A-112E2C1EEFA7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
