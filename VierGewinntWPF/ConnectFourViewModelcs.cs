@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 
@@ -14,6 +15,12 @@ namespace VierGewinntWPF
         Token CurrentPlayerToken { get; set; }
         GameBoard gameBoard;
 
+        string redPlayerTurn;
+        string blackPlayerTurn;
+        string redPlayerWins;
+        string blackPlayerWins;
+        string isBoardEnabled;
+
         ObservableCollection<string> boardLocationColors;
         public ObservableCollection<string> BoardLocationColors
         {
@@ -21,11 +28,6 @@ namespace VierGewinntWPF
             private set { boardLocationColors = value; FirePropertyChanged("BoardLocationColors"); }
         }
 
-        string redPlayerTurn;
-        string blackPlayerTurn;
-        string redPlayerWins;
-        string blackPlayerWins;
-        string isBoardEnabled;
         public string RedPlayerTurn
         {
             get { return redPlayerTurn; }
@@ -67,8 +69,8 @@ namespace VierGewinntWPF
             gameBoard = new GameBoard();
             gameBoard.Initialize();
             boardLocationColors = new ObservableCollection<string>
-                (Enumerable.Repeat("AliceBlue", GameBoard.MaxRow * GameBoard.MaxColumn));
-            RedPlayerTurn = "Visible";
+                (Enumerable.Repeat("lightblue", GameBoard.MaxRow * GameBoard.MaxColumn));
+            RedPlayerTurn = "Hidden";
             BlackPlayerTurn = "Hidden";
             RedPlayerWins = "Hidden";
             BlackPlayerWins = "Hidden";
@@ -98,18 +100,8 @@ namespace VierGewinntWPF
             var tokenPlaced = gameBoard.PlayToken(CurrentPlayerToken, (int)column + 1);
             if (tokenPlaced)
             {
-                string color = "";
-                if(CurrentPlayerToken == Token.Empty)
-                {
-                    color = "Blue";
-                }
-                else
-                {
-                    color = CurrentPlayerToken == Token.Black ? "Black" : "Red";
-                }
-
                 var index = gameBoard.LastLocationPlayedAsOrderIndex();
-                BoardLocationColors[index] = color;
+                boardLocationColors[index] = TokenToColor(CurrentPlayerToken);
                 if (!gameBoard.Winner())
                 {
                     SwitchTurn(CurrentPlayerToken);
@@ -119,6 +111,16 @@ namespace VierGewinntWPF
                     DeclareWinner(CurrentPlayerToken);
                 }
             }
+        }
+
+        private string TokenToColor(Token token)
+        {
+            if (token == Token.Red)
+                return "Red";
+            if (token == Token.Black)
+                return "Black";
+
+            return "lightblue";
         }
     }
 }

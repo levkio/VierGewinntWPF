@@ -58,7 +58,6 @@
     <Compile Include="BaseNotifyPropertyChanged.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="ConnectFourViewModelcs.cs" />
-    <Compile Include="CostumCommand.cs" />
     <Compile Include="GameBoard.cs" />
     <Compile Include="Location.cs" />
     <Compile Include="Token.cs" />

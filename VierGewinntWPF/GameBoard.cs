@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace VierGewinntWPF
@@ -7,32 +8,43 @@ namespace VierGewinntWPF
     {
         private readonly Dictionary<Location, Token> board;
 
-        internal Dictionary<Location, Token> Board => board;
-
         Location lastLocationPlayed;
 
         public static int MaxRow { get { return 6; } }
         public static int MaxColumn { get { return 7; } }
 
+        /// <summary>
+        /// Does the location exists in the grid
+        /// </summary>
+        /// <param name="loc"></param>
+        /// <returns></returns>
         public static bool Exists(Location loc)
         {
             return loc.Row > 0 && loc.Row <= MaxRow &&
                 loc.Column > 0 && loc.Column <= MaxColumn;
         }
 
+        /// <summary>
+        /// saves the last location a token was placed
+        /// </summary>
         public Location LastLocationPlayed
         {
             get { return lastLocationPlayed; }
         }
+
+
         public bool IsEmpty
         {
-            get { return Board.Values.All(d => d == Token.Empty); }
+            get { return board.Values.All(d => d == Token.Empty); }
         }
 
-
+        /// <summary>
+        /// returns grid number x*row + y.position from the last played token
+        /// </summary>
+        /// <returns></returns>
         public int LastLocationPlayedAsOrderIndex()
         {
-            return Board.Keys.OrderBy(k => k.Row).ThenBy(k => k.Column).ToList().IndexOf(LastLocationPlayed);
+            return board.Keys.OrderBy(k => k.Row).ThenBy(k => k.Column).ToList().IndexOf(LastLocationPlayed);
         }
 
 
@@ -50,7 +62,7 @@ namespace VierGewinntWPF
             x = y = 1;
             for (int i = 1; i <= MaxRow * MaxColumn; i++)
             {
-                Board.Add(new Location(x, y), Token.Empty);
+                board.Add(new Location(y, x), Token.Empty);
                 x++;
                 if(x > MaxColumn)
                 {
@@ -68,25 +80,29 @@ namespace VierGewinntWPF
         /// <returns></returns>
         public bool PlayToken(Token token, int column)
         {
+            if(column > MaxColumn || column < 1 )
+                throw new ArgumentException(String.Format("Column must be between 1 and {0}", MaxColumn));
             int row = MaxRow;
-            while(row > 0 && Board[new Location(row,column)] != Token.Empty)
+            while(row > 0 && board[new Location(row,column)] != Token.Empty)
             {
                 row--;
             }
 
             if(row > 0)
             {
-                Board[new Location(row, column)] = token;
+                Location newLoc = new Location(row, column);
+                board[newLoc] = token;
+                lastLocationPlayed = newLoc;
                 return true;
             }
             return false;
         }
         public bool Winner()
         {
-            if (HorizontalWins(lastLocationPlayed, Board[lastLocationPlayed])) return true;
-            if (NWSE_DiagonalWins(lastLocationPlayed, Board[lastLocationPlayed])) return true;
-            if (VerticalWins(lastLocationPlayed, Board[lastLocationPlayed])) return true;
-            if (NESW_DiagonalWins(lastLocationPlayed, Board[lastLocationPlayed])) return true;
+            if (HorizontalWins(lastLocationPlayed, board[lastLocationPlayed])) return true;
+            if (NWSE_DiagonalWins(lastLocationPlayed, board[lastLocationPlayed])) return true;
+            if (VerticalWins(lastLocationPlayed, board[lastLocationPlayed])) return true;
+            if (NESW_DiagonalWins(lastLocationPlayed, board[lastLocationPlayed])) return true;
             return false;
         }
 
@@ -106,8 +122,8 @@ namespace VierGewinntWPF
             while(row >= 1 && column <= MaxColumn)
             {
                 var loc = new Location(row, column);
-                if (Board[loc] != token) break;
-                if (Board[loc] == token)
+                if (board[loc] != token) break;
+                if (board[loc] == token)
                 {
                     countToken++;
                     column++;
@@ -125,7 +141,7 @@ namespace VierGewinntWPF
             while(row <= MaxRow && column >= 1)
             {
                 var loc = new Location(row, column);
-                if(Board[loc] == token)
+                if(board[loc] == token)
                 {
                     countToken++;
                     column--;
@@ -155,7 +171,7 @@ namespace VierGewinntWPF
             while(row >= 1 && column >= 1)
             {
                 var loc = new Location(row, column);
-                if(Board[loc] == token)
+                if(board[loc] == token)
                 {
                     countToken++;
                     column--;
@@ -173,7 +189,7 @@ namespace VierGewinntWPF
             while(row <= MaxRow && column <= MaxColumn)
             {
                 var loc = new Location(row, column);
-                if(Board[loc] == token)
+                if(board[loc] == token)
                 {
                     countToken++;
                     column++;
@@ -196,12 +212,14 @@ namespace VierGewinntWPF
         private bool HorizontalWins(Location location, Token token)
         {
             var countToken = 0;
-            var column = location.Row + 1;
+            var column = location.Column + 1;
 
+
+            // check to the right
             while(column <= MaxColumn)
             {
                 var loc = new Location(location.Row, column);
-                if(Board[loc] == token)
+                if(board[loc] == token)
                 {
                     countToken++;
                     column++;
@@ -216,7 +234,7 @@ namespace VierGewinntWPF
             column = location.Column - 1;
             while(column >= 1){
                 var loc = new Location(location.Row, column);
-                if(Board[loc] == token)
+                if(board[loc] == token)
                 {
                     countToken++;
                     column--;
@@ -240,7 +258,7 @@ namespace VierGewinntWPF
             while(row <= MaxRow)
             {
                 var loc = new Location(row, location.Column);
-                if(Board[loc] == token)
+                if(board[loc] == token)
                 {
                     countToken++;
                     row++;
