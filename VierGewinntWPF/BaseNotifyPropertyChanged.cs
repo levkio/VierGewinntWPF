@@ -6,6 +6,7 @@ namespace VierGewinntWPF
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+		// test commit
         /// <summary>
         /// Fire this event when a Property has changed
         /// Notify all obj that are listining
